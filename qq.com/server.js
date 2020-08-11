@@ -42,9 +42,9 @@ var server = http.createServer(function(request, response){
             response.statusCode = 200
             response.setHeader('Content-Type', 'text/javascript;charset=utf-8')
             console.log(query);
-            const string = fs.readFileSync('./friends.js').toString()
+            const string = `window[{{xxx}}]({{data}})`
             const data = fs.readFileSync('./public/friends.json')
-            response.write(string.replace('{{data}}',data).replace('{{xxx}}',query.functionName))
+            response.write(string.replace('{{data}}',data).replace('{{xxx}}',query.callback))
             response.end()
         }
     } else {

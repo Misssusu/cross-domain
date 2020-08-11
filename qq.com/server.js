@@ -38,12 +38,15 @@ var server = http.createServer(function(request, response){
         response.write(fs.readFileSync('./public/friends.json'))
         response.end()
     } else if(path === '/friends.js'){
-        response.statusCode = 200
-        response.setHeader('Content-Type', 'text/javascript;charset=utf-8')
-        const string = fs.readFileSync('./friends.js').toString()
-        const data = fs.readFileSync('./public/friends.json')
-        response.write(string.replace('{{data}}',data))
-        response.end()
+        if(request.headers["referer"].indexOf('http://localhost:9999') === 0){
+            response.statusCode = 200
+            response.setHeader('Content-Type', 'text/javascript;charset=utf-8')
+            console.log(query);
+            const string = fs.readFileSync('./friends.js').toString()
+            const data = fs.readFileSync('./public/friends.json')
+            response.write(string.replace('{{data}}',data).replace('{{xxx}}',query.functionName))
+            response.end()
+        }
     } else {
         response.statusCode = 404
         response.setHeader('Content-Type', 'text/html;charset=utf-8')
